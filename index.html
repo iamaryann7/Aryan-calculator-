@@ -11,279 +11,312 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 :root {
-    --bg: #07101f;
-    --panel: #101c2d;
+    --bg1: #06101f;
+    --bg2: #101b31;
+    --panel: rgba(13, 29, 50, 0.92);
     --display: #142238;
-    --button: #17263a;
-    --text: #f4f7fb;
-    --muted: #91a1b8;
-    --border: rgba(255,255,255,0.10);
-    --operator: #ff9f0a;
-    --danger: #e83e72;
-    --equal: #168cff;
+    --button: #182a42;
+    --text: #f5f7ff;
+    --muted: #94a6c2;
+    --blue: #238cff;
+    --orange: #ff9f0a;
+    --pink: #ed3975;
+    --border: rgba(55, 151, 255, 0.45);
 }
 
 body.light {
-    --bg: #eef3f9;
-    --panel: #ffffff;
-    --display: #edf2f8;
-    --button: #e1e8f0;
-    --text: #172235;
-    --muted: #68778b;
-    --border: rgba(0,0,0,0.10);
-    --operator: #f08b00;
-    --danger: #df3b68;
-    --equal: #087ee8;
+    --bg1: #eef4ff;
+    --bg2: #dbe7f7;
+    --panel: rgba(255,255,255,0.92);
+    --display: #edf3fa;
+    --button: #ffffff;
+    --text: #172238;
+    --muted: #66758c;
+    --border: rgba(35,140,255,0.35);
 }
 
 body {
     min-height: 100vh;
-    background:
-        radial-gradient(circle at 20% 10%, rgba(30,120,255,0.18), transparent 30%),
-        radial-gradient(circle at 85% 85%, rgba(125,60,255,0.16), transparent 30%),
-        var(--bg);
-    color: var(--text);
     font-family: Arial, Helvetica, sans-serif;
-    padding: 25px 15px;
-    transition: 0.3s;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 20% 10%, rgba(0,126,255,.18), transparent 30%),
+        radial-gradient(circle at 90% 90%, rgba(100,50,255,.18), transparent 30%),
+        linear-gradient(145deg, var(--bg1), var(--bg2));
+    display: flex;
+    justify-content: center;
+    padding: 22px 12px 35px;
+    transition: .3s;
 }
 
-.container {
+.app {
     width: 100%;
-    max-width: 520px;
-    margin: auto;
+    max-width: 680px;
 }
 
 /* HEADER */
-
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
     margin-bottom: 18px;
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
-.logo {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    font-size: 25px;
-    font-weight: bold;
-    background: linear-gradient(135deg, #10a9ff, #734cff);
-    box-shadow: 0 8px 25px rgba(30,120,255,0.25);
+/* YOUR PHOTO */
+.profile-photo {
+    width: 76px;
+    height: 76px;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 3px solid #2196ff;
+    box-shadow:
+        0 0 12px rgba(33,150,255,.65),
+        0 0 25px rgba(33,150,255,.25);
+    flex-shrink: 0;
+    background: #15263e;
 }
 
-.title {
-    font-size: 27px;
-    font-weight: 800;
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 25%;
 }
 
-.title span {
-    color: #20a2ff;
+.brand h1 {
+    font-size: clamp(25px, 7vw, 42px);
+    line-height: 1;
+    letter-spacing: -1px;
 }
 
-.subtitle {
-    color: var(--muted);
-    font-size: 10px;
+.brand h1 span {
+    color: #2495ff;
+}
+
+.brand p {
+    margin-top: 8px;
+    font-size: clamp(9px, 2.5vw, 14px);
     letter-spacing: 4px;
-    margin-top: 4px;
+    color: var(--muted);
 }
 
-.theme {
-    width: 52px;
-    height: 52px;
+/* THEME BUTTON */
+.theme-toggle {
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--button);
-    color: var(--text);
-    font-size: 22px;
+    border: 1px solid rgba(100,180,255,.25);
+    background: rgba(30,50,75,.7);
+    font-size: 28px;
     cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0,0,0,.2);
+    transition: .25s;
+    flex-shrink: 0;
+}
+
+.theme-toggle:active {
+    transform: scale(.92);
 }
 
 /* CALCULATOR */
-
 .calculator {
-    background: rgba(16,28,45,0.88);
+    padding: 22px;
+    border-radius: 38px;
     background: var(--panel);
-    border: 1px solid rgba(80,150,255,0.45);
-    border-radius: 28px;
-    padding: 18px;
+    border: 1px solid var(--border);
     box-shadow:
-        0 25px 70px rgba(0,0,0,0.35),
-        inset 0 1px rgba(255,255,255,0.05);
+        0 20px 50px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.04);
 }
 
-.display {
+/* DISPLAY */
+.display-box {
+    min-height: 220px;
+    border-radius: 30px;
     background: var(--display);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    min-height: 145px;
-    padding: 20px;
-    margin-bottom: 15px;
-
+    border: 1px solid rgba(130,170,210,.18);
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    align-items: flex-end;
-
+    text-align: right;
     overflow: hidden;
+    margin-bottom: 22px;
 }
 
 .expression {
-    width: 100%;
-    text-align: right;
+    min-height: 30px;
+    font-size: 17px;
     color: var(--muted);
-    font-size: 19px;
-    min-height: 28px;
-    overflow-wrap: anywhere;
+    word-break: break-all;
+    margin-bottom: 8px;
 }
 
-.result {
-    width: 100%;
-    text-align: right;
-    font-size: clamp(38px, 10vw, 62px);
-    font-weight: 700;
-    line-height: 1.1;
-    overflow-wrap: anywhere;
+.display {
+    font-size: clamp(48px, 14vw, 72px);
+    font-weight: 500;
+    line-height: 1;
+    word-break: break-all;
 }
 
-/* BUTTONS */
-
+/* BUTTON GRID */
 .buttons {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    gap: 13px;
 }
 
-button {
-    min-height: 62px;
-    border: 1px solid var(--border);
-    border-radius: 17px;
-
+button.calc-btn {
+    height: 82px;
+    border: 1px solid rgba(150,190,230,.13);
+    border-radius: 22px;
     background: var(--button);
     color: var(--text);
-
-    font-size: 20px;
-    font-weight: 600;
-
+    font-size: 26px;
+    font-weight: 500;
     cursor: pointer;
-    transition:
-        transform 0.12s,
-        filter 0.15s,
-        box-shadow 0.15s;
+    box-shadow:
+        0 7px 14px rgba(0,0,0,.15),
+        inset 0 1px 0 rgba(255,255,255,.03);
+    transition: transform .12s, filter .12s;
 }
 
-button:hover {
-    filter: brightness(1.12);
-}
-
-button:active {
-    transform: scale(0.94);
-}
-
-button:focus-visible {
-    outline: 3px solid #209dff;
-    outline-offset: 2px;
+button.calc-btn:active {
+    transform: scale(.94);
+    filter: brightness(1.18);
 }
 
 .memory {
-    font-size: 16px;
-    color: var(--muted);
+    font-size: 19px !important;
+    color: var(--muted) !important;
+}
+
+.ac {
+    background: var(--pink) !important;
+    color: white !important;
+    border: none !important;
 }
 
 .operator {
-    background: var(--operator);
-    color: white;
-    border: none;
-}
-
-.clear {
-    background: var(--danger);
-    color: white;
-    border: none;
+    background: var(--orange) !important;
+    color: white !important;
+    border: none !important;
 }
 
 .equal {
-    background: linear-gradient(135deg, #168cff, #4268ff);
-    color: white;
-    border: none;
-    box-shadow: 0 8px 22px rgba(22,140,255,0.25);
+    background: linear-gradient(135deg, #2196ff, #345eff) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 8px 22px rgba(33,120,255,.35) !important;
 }
 
+/* ZERO BUTTON */
 .zero {
     grid-column: span 2;
 }
 
+/* FOOTER */
 .footer {
     text-align: center;
+    margin-top: 38px;
+}
+
+.footer .quote {
     color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 3px;
-    margin-top: 22px;
+    font-size: clamp(11px, 3vw, 15px);
+    letter-spacing: 5px;
+    line-height: 1.7;
 }
 
-.footer strong {
-    display: block;
-    color: var(--text);
-    margin-top: 9px;
-    letter-spacing: 4px;
+.footer .name {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 5px;
 }
 
-/* MOBILE */
-
-@media (max-width: 420px) {
-
+/* RESPONSIVE */
+@media (max-width: 500px) {
     body {
-        padding: 15px 10px;
+        padding: 18px 10px 28px;
     }
 
-    .title {
-        font-size: 22px;
+    .calculator {
+        padding: 18px;
+        border-radius: 32px;
     }
 
-    .logo {
-        width: 42px;
-        height: 42px;
+    .profile-photo {
+        width: 68px;
+        height: 68px;
+        border-radius: 19px;
     }
 
-    .theme {
-        width: 45px;
-        height: 45px;
+    .theme-toggle {
+        width: 56px;
+        height: 56px;
+        font-size: 25px;
+    }
+
+    .display-box {
+        min-height: 205px;
+        padding: 20px;
+        border-radius: 27px;
+    }
+
+    .buttons {
+        gap: 10px;
+    }
+
+    button.calc-btn {
+        height: 68px;
+        border-radius: 19px;
+        font-size: 23px;
+    }
+
+    .memory {
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 370px) {
+    .brand {
+        gap: 9px;
+    }
+
+    .profile-photo {
+        width: 58px;
+        height: 58px;
+    }
+
+    .brand p {
+        letter-spacing: 2px;
     }
 
     .calculator {
         padding: 13px;
-        border-radius: 23px;
-    }
-
-    .display {
-        min-height: 125px;
-        padding: 16px;
-    }
-
-    button {
-        min-height: 56px;
-        border-radius: 14px;
-        font-size: 18px;
-    }
-
-    .memory {
-        font-size: 13px;
     }
 
     .buttons {
         gap: 7px;
+    }
+
+    button.calc-btn {
+        height: 61px;
+        border-radius: 16px;
+        font-size: 21px;
     }
 }
 </style>
@@ -291,270 +324,121 @@ button:focus-visible {
 
 <body>
 
-<div class="container">
+<div class="app">
 
     <!-- HEADER -->
-
-    <header class="header">
+    <div class="header">
 
         <div class="brand">
 
-            <div class="logo">＋×</div>
+            <!-- YOUR PHOTO -->
+            <div class="profile-photo">
+                <img src="profile.jpg" alt="Aryan">
+            </div>
 
             <div>
-                <div class="title">
-                    Aryan <span>Calculator</span>
-                </div>
-
-                <div class="subtitle">
-                    SIMPLE • FAST • RELIABLE
-                </div>
+                <h1>Aryan <span>Calculator</span></h1>
+                <p>SIMPLE • FAST • RELIABLE</p>
             </div>
 
         </div>
 
-        <button
-            class="theme"
-            id="themeBtn"
-            type="button"
-            aria-label="Change theme">
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
             ☀️
         </button>
 
-    </header>
+    </div>
 
 
     <!-- CALCULATOR -->
+    <div class="calculator">
 
-    <main class="calculator">
-
-        <div class="display">
-
-            <div
-                class="expression"
-                id="expression">
-            </div>
-
-            <div
-                class="result"
-                id="result"
-                aria-live="polite">
-                0
-            </div>
-
+        <!-- DISPLAY -->
+        <div class="display-box">
+            <div class="expression" id="expression"></div>
+            <div class="display" id="display">0</div>
         </div>
 
 
+        <!-- BUTTONS -->
         <div class="buttons">
 
             <!-- MEMORY -->
+            <button class="calc-btn memory" onclick="memoryClear()">MC</button>
+            <button class="calc-btn memory" onclick="memoryRecall()">MR</button>
+            <button class="calc-btn memory" onclick="memoryAdd()">M+</button>
+            <button class="calc-btn memory" onclick="memorySubtract()">M−</button>
+            <button class="calc-btn ac" onclick="clearAll()">AC</button>
 
-            <button
-                class="memory"
-                type="button"
-                data-action="mc">
-                MC
-            </button>
-
-            <button
-                class="memory"
-                type="button"
-                data-action="mr">
-                MR
-            </button>
-
-            <button
-                class="memory"
-                type="button"
-                data-action="mplus">
-                M+
-            </button>
-
-            <button
-                class="memory"
-                type="button"
-                data-action="mminus">
-                M−
-            </button>
-
-            <button
-                class="clear"
-                type="button"
-                data-action="clear">
-                AC
-            </button>
-
-
-            <!-- SECOND ROW -->
-
-            <button type="button" data-value="(">
-                (
-            </button>
-
-            <button type="button" data-value=")">
-                )
-            </button>
-
-            <button type="button" data-value="%">
-                %
-            </button>
-
-            <button type="button" data-action="delete">
-                ⌫
-            </button>
-
-            <button
-                class="operator"
-                type="button"
-                data-value="/">
-                ÷
-            </button>
-
+            <!-- SPECIAL -->
+            <button class="calc-btn" onclick="input('(')">(</button>
+            <button class="calc-btn" onclick="input(')')">)</button>
+            <button class="calc-btn" onclick="percent()">%</button>
+            <button class="calc-btn" onclick="backspace()">⌫</button>
+            <button class="calc-btn operator" onclick="input('÷')">÷</button>
 
             <!-- NUMBERS -->
+            <button class="calc-btn" onclick="input('7')">7</button>
+            <button class="calc-btn" onclick="input('8')">8</button>
+            <button class="calc-btn" onclick="input('9')">9</button>
+            <button class="calc-btn operator" onclick="input('×')">×</button>
+            <button class="calc-btn" onclick="input('.')">.</button>
 
-            <button type="button" data-value="7">7</button>
-            <button type="button" data-value="8">8</button>
-            <button type="button" data-value="9">9</button>
+            <button class="calc-btn" onclick="input('4')">4</button>
+            <button class="calc-btn" onclick="input('5')">5</button>
+            <button class="calc-btn" onclick="input('6')">6</button>
+            <button class="calc-btn operator" onclick="input('−')">−</button>
+            <button class="calc-btn" onclick="input('00')">00</button>
 
-            <button
-                class="operator"
-                type="button"
-                data-value="*">
-                ×
-            </button>
+            <button class="calc-btn" onclick="input('1')">1</button>
+            <button class="calc-btn" onclick="input('2')">2</button>
+            <button class="calc-btn" onclick="input('3')">3</button>
+            <button class="calc-btn operator" onclick="input('+')">+</button>
+            <button class="calc-btn equal" onclick="calculate()">=</button>
 
-            <button type="button" data-value=".">
-                .
-            </button>
-
-
-            <button type="button" data-value="4">4</button>
-            <button type="button" data-value="5">5</button>
-            <button type="button" data-value="6">6</button>
-
-            <button
-                class="operator"
-                type="button"
-                data-value="-">
-                −
-            </button>
-
-            <button type="button" data-value="00">
-                00
-            </button>
-
-
-            <button type="button" data-value="1">1</button>
-            <button type="button" data-value="2">2</button>
-            <button type="button" data-value="3">3</button>
-
-            <button
-                class="operator"
-                type="button"
-                data-value="+">
-                +
-            </button>
-
-            <button type="button" data-value="0" class="zero">
-                0
-            </button>
-
-            <button
-                class="equal"
-                type="button"
-                data-action="equals">
-                =
-            </button>
+            <button class="calc-btn zero" onclick="input('0')">0</button>
 
         </div>
 
-    </main>
+    </div>
 
 
-    <footer class="footer">
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="quote">
+            SMALL CALCULATIONS BUILD BIG DREAMS
+        </div>
 
-        SMALL CALCULATIONS BUILD BIG DREAMS
-
-        <strong>— ARYAN —</strong>
-
-    </footer>
+        <div class="name">
+            — ARYAN —
+        </div>
+    </div>
 
 </div>
 
 
 <script>
 
-const result = document.getElementById("result");
-const expression = document.getElementById("expression");
-const themeBtn = document.getElementById("themeBtn");
-
 let current = "";
-let previousExpression = "";
 let memory = 0;
-let justCalculated = false;
+let lastAnswer = "";
 
 
 /* DISPLAY */
-
 function updateDisplay() {
 
-    result.textContent = current || "0";
-    expression.textContent = previousExpression || "";
+    document.getElementById("display").textContent =
+        current || "0";
 
 }
 
 
-/* ADD VALUE */
+/* INPUT */
+function input(value) {
 
-function addValue(value) {
-
-    if (justCalculated) {
-
-        if (!isOperator(value) && value !== ".") {
-            current = "";
-            previousExpression = "";
-        }
-
-        justCalculated = false;
+    if (current === "Error") {
+        current = "";
     }
-
-
-    /* Decimal */
-
-    if (value === ".") {
-
-        const parts = current.split(/[+\-*/()]/);
-        const lastPart = parts[parts.length - 1];
-
-        if (lastPart.includes(".")) {
-            return;
-        }
-
-        if (
-            !lastPart ||
-            isOperator(current.slice(-1))
-        ) {
-            current += "0";
-        }
-    }
-
-
-    /* Operators */
-
-    if (isOperator(value)) {
-
-        if (!current) {
-            return;
-        }
-
-        const last = current.slice(-1);
-
-        if (isOperator(last)) {
-            current = current.slice(0, -1);
-        }
-    }
-
 
     current += value;
 
@@ -562,40 +446,20 @@ function addValue(value) {
 }
 
 
-/* OPERATOR CHECK */
-
-function isOperator(value) {
-
-    return [
-        "+",
-        "-",
-        "*",
-        "/"
-    ].includes(value);
-
-}
-
-
 /* CLEAR */
-
-function clearCalculator() {
+function clearAll() {
 
     current = "";
-    previousExpression = "";
-    justCalculated = false;
+    lastAnswer = "";
+
+    document.getElementById("expression").textContent = "";
 
     updateDisplay();
 }
 
 
-/* DELETE */
-
-function deleteLast() {
-
-    if (justCalculated) {
-        clearCalculator();
-        return;
-    }
+/* BACKSPACE */
+function backspace() {
 
     current = current.slice(0, -1);
 
@@ -603,68 +467,29 @@ function deleteLast() {
 }
 
 
-/* CALCULATE */
+/* PERCENT */
+function percent() {
 
-function calculate() {
-
-    if (!current) {
-        return;
-    }
+    if (!current) return;
 
     try {
 
-        let formula = current;
+        let safe = current
+            .replace(/×/g, "*")
+            .replace(/÷/g, "/")
+            .replace(/−/g, "-");
 
-        /* Percentage */
-
-        formula = formula.replace(
-            /(\d+(?:\.\d+)?)%/g,
-            "($1/100)"
-        );
-
-
-        /* Security validation */
-
-        if (!/^[0-9+\-*/().%\s]+$/.test(formula)) {
-            throw new Error();
-        }
-
-
-        let answer = Function(
-            '"use strict"; return (' +
-            formula +
-            ')'
+        let result = Function(
+            '"use strict"; return (' + safe + ')'
         )();
 
-
-        if (!Number.isFinite(answer)) {
-            throw new Error();
-        }
-
-
-        answer = Number(
-            answer.toFixed(12)
-        );
-
-
-        previousExpression = current + " =";
-
-        current = String(answer);
-
-        justCalculated = true;
+        current = String(result / 100);
 
         updateDisplay();
 
-    }
-
-    catch {
-
-        previousExpression = "Invalid calculation";
+    } catch {
 
         current = "Error";
-
-        justCalculated = true;
-
         updateDisplay();
 
     }
@@ -672,8 +497,49 @@ function calculate() {
 }
 
 
-/* MEMORY */
+/* CALCULATE */
+function calculate() {
 
+    if (!current) return;
+
+    try {
+
+        let expression = current;
+
+        let safe = expression
+            .replace(/×/g, "*")
+            .replace(/÷/g, "/")
+            .replace(/−/g, "-");
+
+        let result = Function(
+            '"use strict"; return (' + safe + ')'
+        )();
+
+        if (!Number.isFinite(result)) {
+            throw new Error();
+        }
+
+        result = Math.round(result * 1000000000000) / 1000000000000;
+
+        document.getElementById("expression").textContent =
+            expression + " =";
+
+        current = String(result);
+        lastAnswer = String(result);
+
+        updateDisplay();
+
+    } catch {
+
+        current = "Error";
+        updateDisplay();
+
+    }
+
+}
+
+
+/* MEMORY CLEAR */
 function memoryClear() {
 
     memory = 0;
@@ -681,180 +547,141 @@ function memoryClear() {
 }
 
 
+/* MEMORY RECALL */
 function memoryRecall() {
 
     current = String(memory);
-
-    justCalculated = false;
 
     updateDisplay();
 
 }
 
 
+/* MEMORY ADD */
 function memoryAdd() {
 
-    const value = Number(current);
+    let value = getNumber();
 
-    if (Number.isFinite(value)) {
+    if (!isNaN(value)) {
         memory += value;
     }
 
 }
 
 
+/* MEMORY SUBTRACT */
 function memorySubtract() {
 
-    const value = Number(current);
+    let value = getNumber();
 
-    if (Number.isFinite(value)) {
+    if (!isNaN(value)) {
         memory -= value;
     }
 
 }
 
 
-/* BUTTON ACTIONS */
+/* GET CURRENT NUMBER */
+function getNumber() {
 
-document
-.querySelector(".buttons")
-.addEventListener("click", function(event) {
+    try {
 
-    const button = event.target.closest("button");
+        let safe = current
+            .replace(/×/g, "*")
+            .replace(/÷/g, "/")
+            .replace(/−/g, "-");
 
-    if (!button) {
-        return;
-    }
+        return Function(
+            '"use strict"; return (' + safe + ')'
+        )();
 
+    } catch {
 
-    const value = button.dataset.value;
-    const action = button.dataset.action;
-
-
-    if (value !== undefined) {
-
-        addValue(value);
-
-        return;
-    }
-
-
-    switch (action) {
-
-        case "clear":
-            clearCalculator();
-            break;
-
-        case "delete":
-            deleteLast();
-            break;
-
-        case "equals":
-            calculate();
-            break;
-
-        case "mc":
-            memoryClear();
-            break;
-
-        case "mr":
-            memoryRecall();
-            break;
-
-        case "mplus":
-            memoryAdd();
-            break;
-
-        case "mminus":
-            memorySubtract();
-            break;
+        return NaN;
 
     }
 
-});
+}
 
 
-/* KEYBOARD */
+/* THEME */
+function toggleTheme() {
 
+    document.body.classList.toggle("light");
+
+    const button =
+        document.getElementById("themeBtn");
+
+    if (document.body.classList.contains("light")) {
+        button.textContent = "🌙";
+        localStorage.setItem("theme", "light");
+    } else {
+        button.textContent = "☀️";
+        localStorage.setItem("theme", "dark");
+    }
+
+}
+
+
+/* LOAD THEME */
+if (localStorage.getItem("theme") === "light") {
+
+    document.body.classList.add("light");
+
+    document.getElementById("themeBtn").textContent = "🌙";
+
+}
+
+
+/* KEYBOARD SUPPORT */
 document.addEventListener("keydown", function(event) {
 
     const key = event.key;
 
+    if (
+        (key >= "0" && key <= "9") ||
+        key === "." ||
+        key === "(" ||
+        key === ")"
+    ) {
 
-    if (/^[0-9.]$/.test(key)) {
-
-        addValue(key);
+        input(key);
 
     }
 
-    else if (
-        ["+", "-", "*", "/"].includes(key)
-    ) {
+    else if (key === "+") {
+        input("+");
+    }
 
-        addValue(key);
+    else if (key === "-") {
+        input("−");
+    }
 
+    else if (key === "*") {
+        input("×");
+    }
+
+    else if (key === "/") {
+        input("÷");
     }
 
     else if (key === "%") {
-
-        addValue("%");
-
+        percent();
     }
 
-    else if (key === "(" || key === ")") {
-
-        addValue(key);
-
-    }
-
-    else if (
-        key === "Enter" ||
-        key === "="
-    ) {
-
+    else if (key === "Enter" || key === "=") {
         calculate();
-
     }
 
     else if (key === "Backspace") {
-
-        deleteLast();
-
+        backspace();
     }
 
     else if (key === "Escape") {
-
-        clearCalculator();
-
+        clearAll();
     }
 
 });
-
-
-/* THEME */
-
-themeBtn.addEventListener("click", function() {
-
-    document.body.classList.toggle("light");
-
-    if (
-        document.body.classList.contains("light")
-    ) {
-
-        themeBtn.textContent = "🌙";
-
-    } else {
-
-        themeBtn.textContent = "☀️";
-
-    }
-
-});
-
-
-/* START */
-
-updateDisplay();
 
 </script>
 
