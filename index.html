@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aryan Calculator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #07101f;
+    --panel: #101c2d;
+    --display: #142238;
+    --button: #17263a;
+    --text: #f4f7fb;
+    --muted: #91a1b8;
+    --border: rgba(255,255,255,0.10);
+    --operator: #ff9f0a;
+    --danger: #e83e72;
+    --equal: #168cff;
+}
+
+body.light {
+    --bg: #eef3f9;
+    --panel: #ffffff;
+    --display: #edf2f8;
+    --button: #e1e8f0;
+    --text: #172235;
+    --muted: #68778b;
+    --border: rgba(0,0,0,0.10);
+    --operator: #f08b00;
+    --danger: #df3b68;
+    --equal: #087ee8;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 20% 10%, rgba(30,120,255,0.18), transparent 30%),
+        radial-gradient(circle at 85% 85%, rgba(125,60,255,0.16), transparent 30%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 25px 15px;
+    transition: 0.3s;
+}
+
+.container {
+    width: 100%;
+    max-width: 520px;
+    margin: auto;
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #10a9ff, #734cff);
+    box-shadow: 0 8px 25px rgba(30,120,255,0.25);
+}
+
+.title {
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.title span {
+    color: #20a2ff;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 4px;
+    margin-top: 4px;
+}
+
+.theme {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--button);
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* CALCULATOR */
+
+.calculator {
+    background: rgba(16,28,45,0.88);
+    background: var(--panel);
+    border: 1px solid rgba(80,150,255,0.45);
+    border-radius: 28px;
+    padding: 18px;
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.35),
+        inset 0 1px rgba(255,255,255,0.05);
+}
+
+.display {
+    background: var(--display);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    min-height: 145px;
+    padding: 20px;
+    margin-bottom: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    overflow: hidden;
+}
+
+.expression {
+    width: 100%;
+    text-align: right;
+    color: var(--muted);
+    font-size: 19px;
+    min-height: 28px;
+    overflow-wrap: anywhere;
+}
+
+.result {
+    width: 100%;
+    text-align: right;
+    font-size: clamp(38px, 10vw, 62px);
+    font-weight: 700;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+/* BUTTONS */
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+button {
+    min-height: 62px;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+
+    background: var(--button);
+    color: var(--text);
+
+    font-size: 20px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition:
+        transform 0.12s,
+        filter 0.15s,
+        box-shadow 0.15s;
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+button:active {
+    transform: scale(0.94);
+}
+
+button:focus-visible {
+    outline: 3px solid #209dff;
+    outline-offset: 2px;
+}
+
+.memory {
+    font-size: 16px;
+    color: var(--muted);
+}
+
+.operator {
+    background: var(--operator);
+    color: white;
+    border: none;
+}
+
+.clear {
+    background: var(--danger);
+    color: white;
+    border: none;
+}
+
+.equal {
+    background: linear-gradient(135deg, #168cff, #4268ff);
+    color: white;
+    border: none;
+    box-shadow: 0 8px 22px rgba(22,140,255,0.25);
+}
+
+.zero {
+    grid-column: span 2;
+}
+
+.footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-top: 22px;
+}
+
+.footer strong {
+    display: block;
+    color: var(--text);
+    margin-top: 9px;
+    letter-spacing: 4px;
+}
+
+/* MOBILE */
+
+@media (max-width: 420px) {
+
+    body {
+        padding: 15px 10px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .theme {
+        width: 45px;
+        height: 45px;
+    }
+
+    .calculator {
+        padding: 13px;
+        border-radius: 23px;
+    }
+
+    .display {
+        min-height: 125px;
+        padding: 16px;
+    }
+
+    button {
+        min-height: 56px;
+        border-radius: 14px;
+        font-size: 18px;
+    }
+
+    .memory {
+        font-size: 13px;
+    }
+
+    .buttons {
+        gap: 7px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="brand">
+
+            <div class="logo">＋×</div>
+
+            <div>
+                <div class="title">
+                    Aryan <span>Calculator</span>
+                </div>
+
+                <div class="subtitle">
+                    SIMPLE • FAST • RELIABLE
+                </div>
+            </div>
+
+        </div>
+
+        <button
+            class="theme"
+            id="themeBtn"
+            type="button"
+            aria-label="Change theme">
+            ☀️
+        </button>
+
+    </header>
+
+
+    <!-- CALCULATOR -->
+
+    <main class="calculator">
+
+        <div class="display">
+
+            <div
+                class="expression"
+                id="expression">
+            </div>
+
+            <div
+                class="result"
+                id="result"
+                aria-live="polite">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <!-- MEMORY -->
+
+            <button
+                class="memory"
+                type="button"
+                data-action="mc">
+                MC
+            </button>
+
+            <button
+                class="memory"
+                type="button"
+                data-action="mr">
+                MR
+            </button>
+
+            <button
+                class="memory"
+                type="button"
+                data-action="mplus">
+                M+
+            </button>
+
+            <button
+                class="memory"
+                type="button"
+                data-action="mminus">
+                M−
+            </button>
+
+            <button
+                class="clear"
+                type="button"
+                data-action="clear">
+                AC
+            </button>
+
+
+            <!-- SECOND ROW -->
+
+            <button type="button" data-value="(">
+                (
+            </button>
+
+            <button type="button" data-value=")">
+                )
+            </button>
+
+            <button type="button" data-value="%">
+                %
+            </button>
+
+            <button type="button" data-action="delete">
+                ⌫
+            </button>
+
+            <button
+                class="operator"
+                type="button"
+                data-value="/">
+                ÷
+            </button>
+
+
+            <!-- NUMBERS -->
+
+            <button type="button" data-value="7">7</button>
+            <button type="button" data-value="8">8</button>
+            <button type="button" data-value="9">9</button>
+
+            <button
+                class="operator"
+                type="button"
+                data-value="*">
+                ×
+            </button>
+
+            <button type="button" data-value=".">
+                .
+            </button>
+
+
+            <button type="button" data-value="4">4</button>
+            <button type="button" data-value="5">5</button>
+            <button type="button" data-value="6">6</button>
+
+            <button
+                class="operator"
+                type="button"
+                data-value="-">
+                −
+            </button>
+
+            <button type="button" data-value="00">
+                00
+            </button>
+
+
+            <button type="button" data-value="1">1</button>
+            <button type="button" data-value="2">2</button>
+            <button type="button" data-value="3">3</button>
+
+            <button
+                class="operator"
+                type="button"
+                data-value="+">
+                +
+            </button>
+
+            <button type="button" data-value="0" class="zero">
+                0
+            </button>
+
+            <button
+                class="equal"
+                type="button"
+                data-action="equals">
+                =
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <footer class="footer">
+
+        SMALL CALCULATIONS BUILD BIG DREAMS
+
+        <strong>— ARYAN —</strong>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+const result = document.getElementById("result");
+const expression = document.getElementById("expression");
+const themeBtn = document.getElementById("themeBtn");
+
+let current = "";
+let previousExpression = "";
+let memory = 0;
+let justCalculated = false;
+
+
+/* DISPLAY */
+
+function updateDisplay() {
+
+    result.textContent = current || "0";
+    expression.textContent = previousExpression || "";
+
+}
+
+
+/* ADD VALUE */
+
+function addValue(value) {
+
+    if (justCalculated) {
+
+        if (!isOperator(value) && value !== ".") {
+            current = "";
+            previousExpression = "";
+        }
+
+        justCalculated = false;
+    }
+
+
+    /* Decimal */
+
+    if (value === ".") {
+
+        const parts = current.split(/[+\-*/()]/);
+        const lastPart = parts[parts.length - 1];
+
+        if (lastPart.includes(".")) {
+            return;
+        }
+
+        if (
+            !lastPart ||
+            isOperator(current.slice(-1))
+        ) {
+            current += "0";
+        }
+    }
+
+
+    /* Operators */
+
+    if (isOperator(value)) {
+
+        if (!current) {
+            return;
+        }
+
+        const last = current.slice(-1);
+
+        if (isOperator(last)) {
+            current = current.slice(0, -1);
+        }
+    }
+
+
+    current += value;
+
+    updateDisplay();
+}
+
+
+/* OPERATOR CHECK */
+
+function isOperator(value) {
+
+    return [
+        "+",
+        "-",
+        "*",
+        "/"
+    ].includes(value);
+
+}
+
+
+/* CLEAR */
+
+function clearCalculator() {
+
+    current = "";
+    previousExpression = "";
+    justCalculated = false;
+
+    updateDisplay();
+}
+
+
+/* DELETE */
+
+function deleteLast() {
+
+    if (justCalculated) {
+        clearCalculator();
+        return;
+    }
+
+    current = current.slice(0, -1);
+
+    updateDisplay();
+}
+
+
+/* CALCULATE */
+
+function calculate() {
+
+    if (!current) {
+        return;
+    }
+
+    try {
+
+        let formula = current;
+
+        /* Percentage */
+
+        formula = formula.replace(
+            /(\d+(?:\.\d+)?)%/g,
+            "($1/100)"
+        );
+
+
+        /* Security validation */
+
+        if (!/^[0-9+\-*/().%\s]+$/.test(formula)) {
+            throw new Error();
+        }
+
+
+        let answer = Function(
+            '"use strict"; return (' +
+            formula +
+            ')'
+        )();
+
+
+        if (!Number.isFinite(answer)) {
+            throw new Error();
+        }
+
+
+        answer = Number(
+            answer.toFixed(12)
+        );
+
+
+        previousExpression = current + " =";
+
+        current = String(answer);
+
+        justCalculated = true;
+
+        updateDisplay();
+
+    }
+
+    catch {
+
+        previousExpression = "Invalid calculation";
+
+        current = "Error";
+
+        justCalculated = true;
+
+        updateDisplay();
+
+    }
+
+}
+
+
+/* MEMORY */
+
+function memoryClear() {
+
+    memory = 0;
+
+}
+
+
+function memoryRecall() {
+
+    current = String(memory);
+
+    justCalculated = false;
+
+    updateDisplay();
+
+}
+
+
+function memoryAdd() {
+
+    const value = Number(current);
+
+    if (Number.isFinite(value)) {
+        memory += value;
+    }
+
+}
+
+
+function memorySubtract() {
+
+    const value = Number(current);
+
+    if (Number.isFinite(value)) {
+        memory -= value;
+    }
+
+}
+
+
+/* BUTTON ACTIONS */
+
+document
+.querySelector(".buttons")
+.addEventListener("click", function(event) {
+
+    const button = event.target.closest("button");
+
+    if (!button) {
+        return;
+    }
+
+
+    const value = button.dataset.value;
+    const action = button.dataset.action;
+
+
+    if (value !== undefined) {
+
+        addValue(value);
+
+        return;
+    }
+
+
+    switch (action) {
+
+        case "clear":
+            clearCalculator();
+            break;
+
+        case "delete":
+            deleteLast();
+            break;
+
+        case "equals":
+            calculate();
+            break;
+
+        case "mc":
+            memoryClear();
+            break;
+
+        case "mr":
+            memoryRecall();
+            break;
+
+        case "mplus":
+            memoryAdd();
+            break;
+
+        case "mminus":
+            memorySubtract();
+            break;
+
+    }
+
+});
+
+
+/* KEYBOARD */
+
+document.addEventListener("keydown", function(event) {
+
+    const key = event.key;
+
+
+    if (/^[0-9.]$/.test(key)) {
+
+        addValue(key);
+
+    }
+
+    else if (
+        ["+", "-", "*", "/"].includes(key)
+    ) {
+
+        addValue(key);
+
+    }
+
+    else if (key === "%") {
+
+        addValue("%");
+
+    }
+
+    else if (key === "(" || key === ")") {
+
+        addValue(key);
+
+    }
+
+    else if (
+        key === "Enter" ||
+        key === "="
+    ) {
+
+        calculate();
+
+    }
+
+    else if (key === "Backspace") {
+
+        deleteLast();
+
+    }
+
+    else if (key === "Escape") {
+
+        clearCalculator();
+
+    }
+
+});
+
+
+/* THEME */
+
+themeBtn.addEventListener("click", function() {
+
+    document.body.classList.toggle("light");
+
+    if (
+        document.body.classList.contains("light")
+    ) {
+
+        themeBtn.textContent = "🌙";
+
+    } else {
+
+        themeBtn.textContent = "☀️";
+
+    }
+
+});
+
+
+/* START */
+
+updateDisplay();
+
+</script>
+
+</body>
+</html>
